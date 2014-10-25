@@ -8,7 +8,7 @@ NSMutableData *key = [NSMutableData dataWithLength:kCCKeySizeAES256];
 SecRandomCopyBytes(NULL, kCCKeySizeAES256, key.mutableBytes);
 
 // generate a nonce
-NSMutableData *iv = [NSMutableData dataWithLength:ady_ivLength];
+NSMutableData *iv = [NSMutableData dataWithLength:12];
 SecRandomCopyBytes(NULL, 12, iv.mutableBytes);
 
 NSData *cipherText = [TKAESCCMCryptor encrypt:data withKey:key iv:iv];
