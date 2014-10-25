@@ -1,5 +1,9 @@
 # TKCryptor
 
+* Ability to do AES CCM encryption (no auth data)
+* Ability to use Modulus and Exponent in RSA encryption
+* Native iOS code without dependancies, no need in OpenSSL
+
 ## Usage
 
 ``` obj-c
