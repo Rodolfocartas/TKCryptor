@@ -1,26 +1,42 @@
 # TKCryptor
 
-[![CI Status](http://img.shields.io/travis/Taras Kalapun/TKCryptor.svg?style=flat)](https://travis-ci.org/Taras Kalapun/TKCryptor)
-[![Version](https://img.shields.io/cocoapods/v/TKCryptor.svg?style=flat)](http://cocoadocs.org/docsets/TKCryptor)
-[![License](https://img.shields.io/cocoapods/l/TKCryptor.svg?style=flat)](http://cocoadocs.org/docsets/TKCryptor)
-[![Platform](https://img.shields.io/cocoapods/p/TKCryptor.svg?style=flat)](http://cocoadocs.org/docsets/TKCryptor)
-
 ## Usage
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+``` obj-c
+// generate a unique AES key and (later) encrypt it with the public RSA key of the merchant
+NSMutableData *key = [NSMutableData dataWithLength:kCCKeySizeAES256];
+SecRandomCopyBytes(NULL, kCCKeySizeAES256, key.mutableBytes);
 
-## Requirements
+// generate a nonce
+NSMutableData *iv = [NSMutableData dataWithLength:ady_ivLength];
+SecRandomCopyBytes(NULL, 12, iv.mutableBytes);
+
+NSData *cipherText = [TKAESCCMCryptor encrypt:data withKey:key iv:iv];
+
+NSData *encryptedKey = [TKRSACryptor encrypt:key withKeyInHex:keyInHex];
+
+```
+
+Note:
+* AES 256 key
+* no additional auth data
+* tagLength = 8
+* ivLength = 12
+* L = 3
+* RSA stores certificate to Keychain by fingerprint (SHA1)
 
 ## Installation
 
 TKCryptor is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-    pod "TKCryptor"
+pod "TKCryptor", :git => ""
 
 ## Author
 
-Taras Kalapun, t.kalapun@gmail.com
+* Taras Kalapun, t.kalapun@gmail.com
+* Some code from [tinydtls](https://github.com/cetic/tinydtls/)
+* Some code from [iphonelib](https://github.com/meinside/iphonelib)
 
 ## License
 
