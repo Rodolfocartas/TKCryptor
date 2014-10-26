@@ -42,7 +42,7 @@ Note:
 * ivLength = 12
 * L = 3
 * RSA stores certificate to Keychain by fingerprint (SHA1)
-* keyInHex format is "Exponent|Modulus"
+* keyInHex format is `Exponent|Modulus`
 
 ## Installation
 
