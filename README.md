@@ -29,18 +29,18 @@ wich does:
  *  Encrypts the data with AES-CBC using generated AES256 session key and IV (12)
  *  Encrypts the session key with RSA using public key (using Keychain)
  *  Returns fully composed message in format:
-    - a prefix ("")
-    - a separator ($)
+    - a prefix (`""`)
+    - a separator (`$`)
     - RSA encrypted AES key, base64 encoded
-    - a separator ($)
+    - a separator (`$`)
     - a Payload of iv and cipherText, base64 encoded
 
 Note:
 * AES 256 key
 * no additional auth data
-* tagLength = 8
-* ivLength = 12
-* L = 3
+* `tagLength = 8`
+* `ivLength = 12`
+* `L = 3`
 * RSA stores certificate to Keychain by fingerprint (SHA1)
 * keyInHex format is `Exponent|Modulus`
 
