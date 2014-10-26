@@ -19,7 +19,13 @@ NSData *cipherText = [TKAESCCMCryptor encrypt:data withKey:key iv:iv];
 NSData *encryptedKey = [TKRSACryptor encrypt:key withKeyInHex:keyInHex];
 ```
 
-Or use the wrapper `TKCryptor` wich does:
+Or use the wrapper class `TKCryptor` and it's method
+
+``` obj-c
++ (NSString *)encrypt:(NSData *)data publicKeyInHex:(NSString *)keyInHex;
+```
+
+wich does:
  *  Encrypts the data with AES-CBC using generated AES256 session key and IV (12)
  *  Encrypts the session key with RSA using public key (using Keychain)
  *  Returns fully composed message in format:
