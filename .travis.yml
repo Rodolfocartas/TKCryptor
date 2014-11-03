@@ -1,6 +1,9 @@
 # reference: http://www.objc.io/issue-6/travis-ci.html
 
 language: objective-c
-before_install: cd Tests && ./extract_test_vectors.rb && pod install
+before_install:
+  - brew update
+  - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
+  - cd Tests && ./extract_test_vectors.rb && pod install
 script:
-- xcodebuild test -workspace TKCryptor.xcworkspace -scheme Tests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+- xctool test -workspace TKCryptor.xcworkspace -scheme Tests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
