@@ -84,5 +84,35 @@ static NSUInteger crypt_ivLength = 12;
     return [TKRSACryptor encrypt:data withKeyInHex:keyInHex];
 }
 
+#pragma mark - Helpers
+
++ (NSData *)dataFromHex:(NSString *)hex {
+    hex = [hex stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (hex.length & 1) {
+        hex = [@"0" stringByAppendingString:hex];
+    }
+    NSMutableData *data = [[NSMutableData alloc] initWithCapacity:hex.length/2];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [hex length]/2; i++) {
+        byte_chars[0] = [hex characterAtIndex:i*2];
+        byte_chars[1] = [hex characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [data appendBytes:&whole_byte length:1];
+    }
+    return data;
+}
+
+
++ (NSData *)sha1FromStringInHex:(NSString *)stringInHex {
+    NSMutableData *digest = [NSMutableData dataWithCapacity:CC_SHA1_DIGEST_LENGTH];
+    NSData *stringBytes = [stringInHex dataUsingEncoding:NSUTF8StringEncoding];
+    if (CC_SHA1(stringBytes.bytes, (CC_LONG)stringBytes.length, digest.mutableBytes)) {
+        return digest;
+    }
+    return nil;
+}
+
 
 @end

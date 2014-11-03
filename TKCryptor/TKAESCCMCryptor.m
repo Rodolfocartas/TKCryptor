@@ -9,31 +9,53 @@
 
 @implementation TKAESCCMCryptor
 
-static NSUInteger aesccm_ivLength = 12;
-static size_t aesccm_tagLength = 8;
+#if TKC_AESCCM_TraceLog
+NSData *dh(unsigned char *d) {
+    return [NSData dataWithBytes:d length:kCCBlockSizeAES128];
+}
+#endif
+
 
 + (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
 {
-    NSMutableData *cipher = [NSMutableData dataWithBytes:data.bytes length:(data.length + aesccm_tagLength)];
+    return [self encrypt:data withKey:key iv:iv tagLength:8];
+}
+
++ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv tagLength:(size_t)tagLength {
+    return [self encrypt:data withKey:key iv:iv tagLength:tagLength adata:nil];
+}
+
++ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
+          tagLength:(size_t)tagLength adata:(NSData *)adata {
     
-    size_t outLength;
-    CCCryptorStatus status = ccm_aes_encrypt(key.bytes, iv.bytes, data.bytes, data.length, cipher.mutableBytes, &outLength);
+    NSMutableData *cipher = [NSMutableData dataWithBytes:data.bytes length:(data.length + tagLength)];
     
-    if (status != kCCSuccess) {
-        NSLog(@"ccm_aes_crypt error: %i", status);
-        return nil;
+    
+    size_t LSize = 15 - iv.length;
+    ccm_encrypt_message(key.bytes, key.length,
+                        tagLength, LSize, (unsigned char *)iv.bytes,
+                        (unsigned char *)cipher.mutableBytes, data.length,
+                        (unsigned char *)adata.bytes, adata.length);
+
+    
+    if (adata) {
+        NSMutableData *fullCipher = [NSMutableData dataWithCapacity:(adata.length + cipher.length)];
+        [fullCipher appendData:adata];
+        [fullCipher appendData:cipher];
+        return fullCipher;
     }
+    
     return cipher;
 }
 
-CCCryptorStatus aes_encrypt(const void *key, unsigned char *bytes, unsigned char *cipher) {
+CCCryptorStatus aes_encrypt(const void *key, size_t kL, unsigned char *bytes, unsigned char *cipher) {
     size_t length = kCCBlockSizeAES128;
     size_t outLength;
     CCCryptorStatus result = CCCrypt(kCCEncrypt,
                                      kCCAlgorithmAES,
                                      kCCOptionECBMode,
                                      key,
-                                     kCCKeySizeAES256,
+                                     kL,
                                      NULL,
                                      bytes,
                                      length,
@@ -49,20 +71,8 @@ CCCryptorStatus aes_encrypt(const void *key, unsigned char *bytes, unsigned char
 
 #pragma mark - CCM
 
-
-CCCryptorStatus ccm_aes_encrypt(const void *key,
-                                const void *iv,
-                                const void *dataIn,
-                                size_t dataInLength,
-                                void *dataOut,
-                                size_t *dataOutMoved)
-{
-    size_t aesccm_LLength = 3;
-    ccm_encrypt_message(key, aesccm_tagLength, aesccm_LLength, (unsigned char *)iv, (unsigned char *)dataOut, dataInLength, NULL, 0);
-    return 0;
-}
-
 #define CCM_BLOCKSIZE kCCBlockSizeAES128
+
 
 #define CCM_FLAGS(A,M,L) (((A > 0) << 6) | (((M - 2)/2) << 3) | (L - 1))
 
@@ -75,6 +85,7 @@ memset((A) + CCM_BLOCKSIZE - (L), 0, (L));			\
 for (i = CCM_BLOCKSIZE - 1; (C) && (i > (L)); --i, (C) >>= 8)	\
 (A)[i] |= (C) & 0xFF;						\
 }
+
 
 // XORs `n` bytes byte-by-byte starting at `y` to the memory area starting at `x`.
 static inline void
@@ -106,7 +117,8 @@ ccm_block0(size_t M,       /* number of auth bytes */
 }
 
 static inline void
-ccm_encrypt_xor(const void *key, size_t L, unsigned long counter,
+ccm_encrypt_xor(const void *key, size_t kL,
+                size_t L, unsigned long counter,
                 unsigned char *msg, size_t len,
                 unsigned char A[CCM_BLOCKSIZE],
                 unsigned char S[CCM_BLOCKSIZE]) {
@@ -114,12 +126,12 @@ ccm_encrypt_xor(const void *key, size_t L, unsigned long counter,
     static unsigned long counter_tmp;
     
     CCM_SET_COUNTER(A, L, counter, counter_tmp);
-    aes_encrypt(key, A, S);
+    aes_encrypt(key, kL, A, S);
     ccm_memxor(msg, S, len);
 }
 
 static inline void
-ccm_mac(const void *key,
+ccm_mac(const void *key, size_t kL,
         unsigned char *msg, size_t len,
         unsigned char B[CCM_BLOCKSIZE],
         unsigned char X[CCM_BLOCKSIZE]) {
@@ -128,8 +140,86 @@ ccm_mac(const void *key,
     for (i = 0; i < len; ++i)
         B[i] = X[i] ^ msg[i];
     
-    aes_encrypt(key, B, X);
+#if TKC_AESCCM_TraceLog
+    NSLog(@"ccm_mac: %@", dh(B));
+#endif
     
+    aes_encrypt(key, kL, B, X);
+
+#if TKC_AESCCM_TraceLog
+    NSLog(@"ccm_mac e: %@", dh(X));
+#endif
+}
+
+#define dtls_int_to_uint16(Field,Value) do {			\
+  *(unsigned char*)(Field) = ((Value) >> 8) & 0xff;		\
+  *(((unsigned char*)(Field))+1) = ((Value) & 0xff);		\
+  } while(0)
+
+/**
+ * Creates the CBC-MAC for the additional authentication data that
+ * is sent in cleartext.
+ *
+ * @param key The AES key
+ * @param kL  The AES key length
+ * @param msg  The message starting with the additional authentication data.
+ * @param la   The number of additional authentication bytes in msg.
+ * @param B    The input buffer for crypto operations. When this function
+ *             is called, B must be initialized with B0 (the first
+ *             authentication block.
+ * @param X    The output buffer where the result of the CBC calculation
+ *             is placed.
+ * @return     The result is written to `X`.
+ */
+static void
+ccm_add_auth_data(const void *key, size_t kL,
+              const unsigned char *msg, size_t la,
+              unsigned char B[CCM_BLOCKSIZE],
+              unsigned char X[CCM_BLOCKSIZE]) {
+    size_t i,j;
+    
+    aes_encrypt(key, kL, B, X);
+    memset(B, 0, CCM_BLOCKSIZE);
+    
+    if (!la)
+        return;
+    
+
+    /* Here we are building for small devices and thus
+     * anticipate that the number of additional authentication bytes
+     * will not exceed 65280 bytes (0xFF00) and we can skip the
+     * workarounds required for j=6 and j=10 on devices with a word size
+     * of 32 bits or 64 bits, respectively.
+     */
+    
+    assert(la < 0xFF00);
+    j = 2;
+    dtls_int_to_uint16(B, la);
+    
+    i = MIN(CCM_BLOCKSIZE - j, la);
+    memcpy(B + j, msg, i);
+    la -= i;
+    msg += i;
+    
+    ccm_memxor(B, X, CCM_BLOCKSIZE);
+    
+    aes_encrypt(key, kL, B, X);
+    
+    while (la > CCM_BLOCKSIZE) {
+        for (i = 0; i < CCM_BLOCKSIZE; ++i)
+            B[i] = X[i] ^ *msg++;
+        la -= CCM_BLOCKSIZE;
+        
+        aes_encrypt(key, kL, B, X);
+    }
+    
+    if (la) {
+        memset(B, 0, CCM_BLOCKSIZE);
+        memcpy(B, msg, la);
+        ccm_memxor(B, X, CCM_BLOCKSIZE);
+        
+        aes_encrypt(key, kL, B, X);
+    } 
 }
 
 /**
@@ -137,6 +227,7 @@ ccm_mac(const void *key,
  * see also RFC 3610 for the meaning of  M,  L,  lm and  la.
  *
  * @param key The AES key
+ * @param kL  The AES key length
  * @param M   The number of authentication octets.
  * @param L   The number of bytes used to encode the message length.
  * @param N   The nonce value to use. You must provide  CCM_BLOCKSIZE
@@ -153,7 +244,8 @@ ccm_mac(const void *key,
  * @return length
  */
 size_t
-ccm_encrypt_message(const void *key, size_t M, size_t L,
+ccm_encrypt_message(const void *key, size_t kL,
+                    size_t M, size_t L,
                     unsigned char nonce[CCM_BLOCKSIZE],
                     unsigned char *msg, size_t lm,
                     const unsigned char *aad, size_t la) {
@@ -169,10 +261,17 @@ ccm_encrypt_message(const void *key, size_t M, size_t L,
     /* create the initial authentication block B0 */
     ccm_block0(M, L, la, lm, nonce, B);
     
-    // We don't use auth data
-    //_add_auth_data(key, aad, la, B, X);
-    aes_encrypt(key, B, X);
-    memset(B, 0, CCM_BLOCKSIZE);
+#if TKC_AESCCM_TraceLog
+    NSLog(@"ccm_block0: %@", dh(B));
+#endif
+    
+    //aes_encrypt(key, kL, B, X);
+    //memset(B, 0, CCM_BLOCKSIZE);
+    ccm_add_auth_data(key, kL, aad, la, B, X);
+    
+#if TKC_AESCCM_TraceLog
+    NSLog(@"ccm_add_auth_data: B: %@ X: %@", dh(B), dh(X));
+#endif
     
     /* initialize block template */
     A[0] = L-1;
@@ -182,10 +281,11 @@ ccm_encrypt_message(const void *key, size_t M, size_t L,
     
     while (lm >= CCM_BLOCKSIZE) {
         // calculate MAC
-        ccm_mac(key, msg, CCM_BLOCKSIZE, B, X);
+        ccm_mac(key, kL, msg, CCM_BLOCKSIZE, B, X);
+        
         
         // encrypt
-        ccm_encrypt_xor(key, L, counter, msg, CCM_BLOCKSIZE, A, S);
+        ccm_encrypt_xor(key, kL, L, counter, msg, CCM_BLOCKSIZE, A, S);
         
         // update local pointers
         lm -= CCM_BLOCKSIZE;
@@ -200,10 +300,10 @@ ccm_encrypt_message(const void *key, size_t M, size_t L,
          * (i.e., we can use memcpy() here).
          */
         memcpy(B + lm, X + lm, CCM_BLOCKSIZE - lm);
-        ccm_mac(key, msg, lm, B, X);
+        ccm_mac(key, kL, msg, lm, B, X);
         
         // encrypt
-        ccm_encrypt_xor(key, L, counter, msg, lm, A, S);
+        ccm_encrypt_xor(key, kL, L, counter, msg, lm, A, S);
         
         // update local pointers
         msg += lm;
@@ -211,7 +311,7 @@ ccm_encrypt_message(const void *key, size_t M, size_t L,
     
     // calculate S_0
     CCM_SET_COUNTER(A, L, 0, counter_tmp);
-    aes_encrypt(key, A, S);
+    aes_encrypt(key, kL, A, S);
     
     for (i = 0; i < M; ++i)
         *msg++ = X[i] ^ S[i];
@@ -219,9 +319,6 @@ ccm_encrypt_message(const void *key, size_t M, size_t L,
     return len + M;
 }
 
-//NSData *dh(unsigned char *d) {
-//    return [NSData dataWithBytes:d length:kCCBlockSizeAES128];
-//}
 
 
 @end

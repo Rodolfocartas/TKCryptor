@@ -50,4 +50,7 @@
 + (NSData *)rsaEncrypt:(NSData *)data withKeyInHex:(NSString *)keyInHex;
 
 
++ (NSData *)dataFromHex:(NSString *)hex;
++ (NSData *)sha1FromStringInHex:(NSString *)stringInHex;
+
 @end

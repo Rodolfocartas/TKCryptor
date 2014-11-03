@@ -6,8 +6,12 @@
 
 #import <Foundation/Foundation.h>
 
+#define TKC_AESCCM_TraceLog 0
+
 @interface TKAESCCMCryptor : NSObject
 
 + (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv;
++ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
+          tagLength:(size_t)tagLength adata:(NSData *)adata;
 
 @end

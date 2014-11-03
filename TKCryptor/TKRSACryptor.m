@@ -6,39 +6,12 @@
 
 #import "TKRSACryptor.h"
 #import <Security/Security.h>
-#include <CommonCrypto/CommonDigest.h>
+#import "TKCryptor.h"
 
 @implementation TKRSACryptor
 
-+ (NSData *)dataFromHex:(NSString *)hex {
-    if (hex.length & 1) {
-        hex = [@"0" stringByAppendingString:hex];
-    }
-    NSMutableData *data = [[NSMutableData alloc] initWithCapacity:hex.length/2];
-    unsigned char whole_byte;
-    char byte_chars[3] = {'\0','\0','\0'};
-    int i;
-    for (i=0; i < [hex length]/2; i++) {
-        byte_chars[0] = [hex characterAtIndex:i*2];
-        byte_chars[1] = [hex characterAtIndex:i*2+1];
-        whole_byte = strtol(byte_chars, NULL, 16);
-        [data appendBytes:&whole_byte length:1];
-    }
-    return data;
-}
-
-
-+ (NSData *)fingerprintOfKeyInHex:(NSString *)keyInHex {
-    NSMutableData *digest = [NSMutableData dataWithCapacity:CC_SHA1_DIGEST_LENGTH];
-    NSData *stringBytes = [keyInHex dataUsingEncoding:NSUTF8StringEncoding];
-    if (CC_SHA1(stringBytes.bytes, (CC_LONG)stringBytes.length, digest.mutableBytes)) {
-        return digest;
-    }
-    return nil;
-}
-
 + (NSData *)encrypt:(NSData *)data withKeyInHex:(NSString *)keyInHex {
-    NSString *fingerprint = [[self fingerprintOfKeyInHex:keyInHex] base64EncodedStringWithOptions:0];
+    NSString *fingerprint = [[TKCryptor sha1FromStringInHex:keyInHex] base64EncodedStringWithOptions:0];
 
     SecKeyRef publicKey = [self loadRSAPublicKeyRefWithAppTag:fingerprint];
     if (!publicKey) {
@@ -48,8 +21,8 @@
             return nil;
         }
         
-        NSData *exponent = [self.class dataFromHex:tokens[0]];
-        NSData *modulus  = [self.class dataFromHex:tokens[1]];
+        NSData *exponent = [TKCryptor dataFromHex:tokens[0]];
+        NSData *modulus  = [TKCryptor dataFromHex:tokens[1]];
         
         if (!exponent || !modulus) {
             return nil;

@@ -7,42 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
-		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
-		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		AC4431108EE5E9C016006B7F /* libPods-TKCryptor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0709ABFEA619B67B1BDE876 /* libPods-TKCryptor.a */; };
+		761B75021A07720800E8F31B /* AESCCMTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 761B75011A07720800E8F31B /* AESCCMTest.m */; };
+		761B75051A07940800E8F31B /* test_vectors.json in Resources */ = {isa = PBXBuildFile; fileRef = 761B75041A07940800E8F31B /* test_vectors.json */; };
+		A27E5892B2959B56829E4707 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3038E2942584C38FC19A8A14 /* libPods-Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		26BE0DB76778893CADE66D82 /* TKCryptor.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TKCryptor.podspec; path = ../TKCryptor.podspec; sourceTree = "<group>"; };
+		3038E2942584C38FC19A8A14 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3057EDF35FC8E5B93BC909F4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		5FB0629500CB0E3DF84DD58B /* Pods-TKCryptor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TKCryptor.release.xcconfig"; path = "Pods/Target Support Files/Pods-TKCryptor/Pods-TKCryptor.release.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* TKCryptor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TKCryptor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6003F5AE195388D20070C39A /* TKCryptor.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TKCryptor.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
-		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
-		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		761B74F81A0770AB00E8F31B /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		761B74FB1A0770AB00E8F31B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		761B75011A07720800E8F31B /* AESCCMTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AESCCMTest.m; sourceTree = "<group>"; };
+		761B75041A07940800E8F31B /* test_vectors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test_vectors.json; sourceTree = "<group>"; };
 		7C04D3CC93E381BDEE5FAD9A /* Pods-TKCryptor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TKCryptor.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TKCryptor/Pods-TKCryptor.debug.xcconfig"; sourceTree = "<group>"; };
+		91B980EDD7B2EC4887031D27 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C00051C47603A8437682B89F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		C65051166BAE69AABF7E5B9F /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E0709ABFEA619B67B1BDE876 /* libPods-TKCryptor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TKCryptor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		6003F5AB195388D20070C39A /* Frameworks */ = {
+		761B74F51A0770AB00E8F31B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
-				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
-				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				AC4431108EE5E9C016006B7F /* libPods-TKCryptor.a in Frameworks */,
+				A27E5892B2959B56829E4707 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,8 +48,9 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				761B75041A07940800E8F31B /* test_vectors.json */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
-				6003F5B5195388D20070C39A /* Tests */,
+				761B74F91A0770AB00E8F31B /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				BD8AF05FADF54E6FF39FC211 /* Pods */,
@@ -64,7 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				6003F58A195388D20070C39A /* TKCryptor.app */,
-				6003F5AE195388D20070C39A /* TKCryptor.xctest */,
+				761B74F81A0770AB00E8F31B /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -77,27 +74,9 @@
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				E0709ABFEA619B67B1BDE876 /* libPods-TKCryptor.a */,
+				3038E2942584C38FC19A8A14 /* libPods-Tests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6003F5B5195388D20070C39A /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
-				6003F5B6195388D20070C39A /* Supporting Files */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		6003F5B6195388D20070C39A /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				6003F5B7195388D20070C39A /* Tests-Info.plist */,
-				6003F5B8195388D20070C39A /* InfoPlist.strings */,
-				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
@@ -110,11 +89,30 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		761B74F91A0770AB00E8F31B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				761B75011A07720800E8F31B /* AESCCMTest.m */,
+				761B74FA1A0770AB00E8F31B /* Supporting Files */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		761B74FA1A0770AB00E8F31B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				761B74FB1A0770AB00E8F31B /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		BD8AF05FADF54E6FF39FC211 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				7C04D3CC93E381BDEE5FAD9A /* Pods-TKCryptor.debug.xcconfig */,
 				5FB0629500CB0E3DF84DD58B /* Pods-TKCryptor.release.xcconfig */,
+				91B980EDD7B2EC4887031D27 /* Pods-Tests.debug.xcconfig */,
+				C65051166BAE69AABF7E5B9F /* Pods-Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -122,23 +120,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6003F5AD195388D20070C39A /* TKCryptor */ = {
+		761B74F71A0770AB00E8F31B /* Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "TKCryptor" */;
+			buildConfigurationList = 761B74FE1A0770AB00E8F31B /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
-				E30C45559E877B2D49A522CA /* Check Pods Manifest.lock */,
-				6003F5AA195388D20070C39A /* Sources */,
-				6003F5AB195388D20070C39A /* Frameworks */,
-				6003F5AC195388D20070C39A /* Resources */,
-				6EACF03A9DDD1CA4E88A498B /* Copy Pods Resources */,
+				AC3BB04647ADAC66EDBA0A56 /* Check Pods Manifest.lock */,
+				761B74F41A0770AB00E8F31B /* Sources */,
+				761B74F51A0770AB00E8F31B /* Frameworks */,
+				761B74F61A0770AB00E8F31B /* Resources */,
+				E51D3C3D152DE5A22168D239 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = TKCryptor;
-			productName = TKCryptorTests;
-			productReference = 6003F5AE195388D20070C39A /* TKCryptor.xctest */;
+			name = Tests;
+			productName = Tests;
+			productReference = 761B74F81A0770AB00E8F31B /* Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -151,8 +149,8 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Taras Kalapun";
 				TargetAttributes = {
-					6003F5AD195388D20070C39A = {
-						TestTargetID = 6003F589195388D20070C39A;
+					761B74F71A0770AB00E8F31B = {
+						CreatedOnToolsVersion = 6.1;
 					};
 				};
 			};
@@ -169,39 +167,24 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6003F5AD195388D20070C39A /* TKCryptor */,
+				761B74F71A0770AB00E8F31B /* Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		6003F5AC195388D20070C39A /* Resources */ = {
+		761B74F61A0770AB00E8F31B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */,
+				761B75051A07940800E8F31B /* test_vectors.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6EACF03A9DDD1CA4E88A498B /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TKCryptor/Pods-TKCryptor-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E30C45559E877B2D49A522CA /* Check Pods Manifest.lock */ = {
+		AC3BB04647ADAC66EDBA0A56 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -216,29 +199,33 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		E51D3C3D152DE5A22168D239 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		6003F5AA195388D20070C39A /* Sources */ = {
+		761B74F41A0770AB00E8F31B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				761B75021A07720800E8F31B /* AESCCMTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		6003F5B8195388D20070C39A /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6003F5B9195388D20070C39A /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6003F5BD195388D20070C39A /* Debug */ = {
@@ -313,43 +300,43 @@
 			};
 			name = Release;
 		};
-		6003F5C3195388D20070C39A /* Debug */ = {
+		761B74FF1A0770AB00E8F31B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7C04D3CC93E381BDEE5FAD9A /* Pods-TKCryptor.debug.xcconfig */;
+			baseConfigurationReference = 91B980EDD7B2EC4887031D27 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		6003F5C4195388D20070C39A /* Release */ = {
+		761B75001A0770AB00E8F31B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FB0629500CB0E3DF84DD58B /* Pods-TKCryptor.release.xcconfig */;
+			baseConfigurationReference = C65051166BAE69AABF7E5B9F /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -365,11 +352,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "TKCryptor" */ = {
+		761B74FE1A0770AB00E8F31B /* Build configuration list for PBXNativeTarget "Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6003F5C3195388D20070C39A /* Debug */,
-				6003F5C4195388D20070C39A /* Release */,
+				761B74FF1A0770AB00E8F31B /* Debug */,
+				761B75001A0770AB00E8F31B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

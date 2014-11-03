@@ -2,12 +2,13 @@
 
 Pod::Spec.new do |s|
   s.name             = "TKCryptor"
-  s.version          = "0.0.1"
+  s.version          = "0.1.0"
   s.summary          = "AES-CCM encryption and RSA from modulus & exponent "
   s.description      = <<-DESC
-                       * Ability to do AES CCM encryption (no auth data)
+                       * Ability to do AES CCM encryption
                        * Ability to use Modulus and Exponent in RSA encryption
                        * Native iOS code without dependancies, no need in OpenSSL
+                       * Tested with RFC 3610 test vectors
                        DESC
   s.homepage         = "https://github.com/xslim/TKCryptor"
   s.license          = 'MIT'

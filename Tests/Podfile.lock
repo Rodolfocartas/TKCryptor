@@ -1,0 +1,14 @@
+PODS:
+  - TKCryptor (0.0.1)
+
+DEPENDENCIES:
+  - TKCryptor (from `../`)
+
+EXTERNAL SOURCES:
+  TKCryptor:
+    :path: ../
+
+SPEC CHECKSUMS:
+  TKCryptor: fd5fe42dbbe39d562571f434a4bccc0e53e2f48a
+
+COCOAPODS: 0.34.4
