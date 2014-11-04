@@ -62,10 +62,11 @@ static NSUInteger crypt_ivLength = 12;
     
     NSString *result = nil;
     
+    NSString *prefix = (crypt_msg_prefix.length == 0) ? @"" : [crypt_msg_prefix stringByAppendingString:crypt_msg_separator];
+    
     if (encryptedKey) {
-        result = [NSString stringWithFormat:@"%@%@%@%@%@",
-                  crypt_msg_prefix,
-                  crypt_msg_separator,
+        result = [NSString stringWithFormat:@"%@%@%@%@",
+                  prefix,
                   [encryptedKey base64EncodedStringWithOptions:0],
                   crypt_msg_separator,
                   [payload base64EncodedStringWithOptions:0]];
