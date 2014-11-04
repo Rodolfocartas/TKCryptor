@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "TKCryptor"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "AES-CCM encryption and RSA from modulus & exponent "
   s.description      = <<-DESC
                        * Ability to do AES CCM encryption
