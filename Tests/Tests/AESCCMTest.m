@@ -108,5 +108,15 @@ static NSArray *testVectors = nil;
     
 }
 
+- (void)testAllVectorsSpeed {
+    [self measureBlock:^{
+        for (int i=0; i<100; i++) {
+            [self testSimple];
+            [self testOneVector];
+            [self testAllVectors];
+        }
+    }];
+}
+
 
 @end

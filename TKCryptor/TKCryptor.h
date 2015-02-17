@@ -52,5 +52,6 @@
 
 + (NSData *)dataFromHex:(NSString *)hex;
 + (NSData *)sha1FromStringInHex:(NSString *)stringInHex;
++ (NSData *)sha1FromNSData:(NSData *)data;
 
 @end

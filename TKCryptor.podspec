@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "TKCryptor"
-  s.version          = "0.1.1"
+  s.version          = "1.1.1"
   s.summary          = "AES-CCM encryption and RSA from modulus & exponent "
   s.description      = <<-DESC
                        * Ability to do AES CCM encryption
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/xslim/TKCryptor.git", :tag => s.version.to_s }
 
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '6.1'
   s.requires_arc = true
 
   s.source_files = 'TKCryptor'

@@ -10,9 +10,25 @@
 
 @implementation TKRSACryptor
 
-+ (NSData *)encrypt:(NSData *)data withKeyInHex:(NSString *)keyInHex {
-    NSString *fingerprint = [[TKCryptor sha1FromStringInHex:keyInHex] base64EncodedStringWithOptions:0];
++ (NSString *)base64EncodeData:(NSData *)data {
+    if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+        return [data base64EncodedStringWithOptions:kNilOptions];  // iOS 7+
+    } else {
+        return [data base64Encoding];                              // pre iOS7
+    }
+}
 
++ (NSData *)encrypt:(NSData *)data withKeyInHex:(NSString *)keyInHex {
+    NSString *fingerprint = [self base64EncodeData:[TKCryptor sha1FromStringInHex:keyInHex]];
+    
+    if (!fingerprint || fingerprint.length == 0) {
+        fingerprint = keyInHex;
+    }
+    
+    if (!fingerprint || fingerprint.length == 0) {
+        fingerprint = keyInHex;
+    }
+    
     SecKeyRef publicKey = [self loadRSAPublicKeyRefWithAppTag:fingerprint];
     if (!publicKey) {
         
@@ -127,13 +143,13 @@
     
     NSDictionary *query = nil;
     query = @{
-          (__bridge id)kSecClass:               (__bridge id)kSecClassKey,
-          (__bridge id)kSecAttrKeyType:         (__bridge id)kSecAttrKeyTypeRSA,
-          (__bridge id)kSecAttrKeyClass:        (__bridge id)kSecAttrKeyClassPublic,
-          (__bridge id)kSecAttrApplicationTag:  [appTag dataUsingEncoding:NSUTF8StringEncoding],
-          (__bridge id)kSecValueData:           publicKey,
-          (__bridge id)kSecReturnPersistentRef: @(YES)
-          };
+              (__bridge id)kSecClass:               (__bridge id)kSecClassKey,
+              (__bridge id)kSecAttrKeyType:         (__bridge id)kSecAttrKeyTypeRSA,
+              (__bridge id)kSecAttrKeyClass:        (__bridge id)kSecAttrKeyClassPublic,
+              (__bridge id)kSecAttrApplicationTag:  [appTag dataUsingEncoding:NSUTF8StringEncoding],
+              (__bridge id)kSecValueData:           publicKey,
+              (__bridge id)kSecReturnPersistentRef: @(YES)
+              };
     
     CFDataRef ref;
     OSStatus status = SecItemAdd((__bridge CFDictionaryRef)query, (CFTypeRef *)&ref);
@@ -193,7 +209,7 @@
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
     
     if (status != noErr) NSLog(@"result = %d", (int)status);
-
+    
     return status == noErr;
 }
 
@@ -225,9 +241,9 @@
 
 /**
  * encrypt with RSA public key
- * 
+ *
  * padding = kSecPaddingPKCS1 / kSecPaddingNone
- * 
+ *
  */
 + (NSData *)encrypt:(NSData *)original RSAPublicKey:(SecKeyRef)publicKey padding:(SecPadding)padding
 {
@@ -236,11 +252,11 @@
         size_t encryptedLength = SecKeyGetBlockSize(publicKey);
         uint8_t encrypted[encryptedLength];
         
-        OSStatus status = SecKeyEncrypt(publicKey, 
-                                        padding, 
+        OSStatus status = SecKeyEncrypt(publicKey,
+                                        padding,
                                         original.bytes,
                                         original.length,
-                                        encrypted, 
+                                        encrypted,
                                         &encryptedLength);
         if (status == noErr) {
             NSData *encryptedData = [[NSData alloc] initWithBytes:(const void*)encrypted length:encryptedLength];

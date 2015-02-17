@@ -32,6 +32,14 @@ static NSUInteger crypt_ivLength = 12;
     crypt_msg_separator = separator;
 }
 
++ (NSString *)base64EncodeData:(NSData *)data {
+    if ([data respondsToSelector:@selector(base64EncodedStringWithOptions:)]) {
+        return [data base64EncodedStringWithOptions:kNilOptions];  // iOS 7+
+    } else {
+        return [data base64Encoding];                              // pre iOS7
+    }
+}
+
 + (NSString *)encrypt:(NSData *)data publicKeyInHex:(NSString *)keyInHex
 {
     // generate a unique AES key and (later) encrypt it with the public RSA key of the merchant
@@ -67,9 +75,9 @@ static NSUInteger crypt_ivLength = 12;
     if (encryptedKey) {
         result = [NSString stringWithFormat:@"%@%@%@%@",
                   prefix,
-                  [encryptedKey base64EncodedStringWithOptions:0],
+                  [self base64EncodeData:encryptedKey],
                   crypt_msg_separator,
-                  [payload base64EncodedStringWithOptions:0]];
+                  [self base64EncodeData:payload]];
     }
     
     return result;
@@ -107,12 +115,17 @@ static NSUInteger crypt_ivLength = 12;
 
 
 + (NSData *)sha1FromStringInHex:(NSString *)stringInHex {
-    NSMutableData *digest = [NSMutableData dataWithCapacity:CC_SHA1_DIGEST_LENGTH];
     NSData *stringBytes = [stringInHex dataUsingEncoding:NSUTF8StringEncoding];
-    if (CC_SHA1(stringBytes.bytes, (CC_LONG)stringBytes.length, digest.mutableBytes)) {
-        return digest;
+    return [self sha1FromNSData:stringBytes];
+}
+
++ (NSData *)sha1FromNSData:(NSData *)data {
+    unsigned char buffer[CC_SHA1_DIGEST_LENGTH];
+    if (CC_SHA1(data.bytes, (CC_LONG)data.length, buffer)) {
+        return [NSData dataWithBytes:buffer length:CC_SHA1_DIGEST_LENGTH];
+    } else {
+        return nil;
     }
-    return nil;
 }
 
 

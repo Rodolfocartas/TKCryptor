@@ -78,12 +78,12 @@ CCCryptorStatus aes_encrypt(const void *key, size_t kL, unsigned char *bytes, un
 
 #define CCM_MASK_L(_L) ((1 << 8 * _L) - 1)
 
-#define CCM_SET_COUNTER(A,L,cnt,C) {					\
-int i;								\
-memset((A) + CCM_BLOCKSIZE - (L), 0, (L));			\
-(C) = (cnt) & CCM_MASK_L(L);						\
-for (i = CCM_BLOCKSIZE - 1; (C) && (i > (L)); --i, (C) >>= 8)	\
-(A)[i] |= (C) & 0xFF;						\
+#define CCM_SET_COUNTER(A,L,cnt,C) {                                \
+    int i;                                                          \
+    memset((A) + CCM_BLOCKSIZE - (L), 0, (L));                      \
+    (C) = (cnt) & CCM_MASK_L(L);                                    \
+    for (i = CCM_BLOCKSIZE - 1; (C) && (i > (L)); --i, (C) >>= 8)	\
+        (A)[i] |= (C) & 0xFF;                                       \
 }
 
 
@@ -151,8 +151,8 @@ ccm_mac(const void *key, size_t kL,
 #endif
 }
 
-#define dtls_int_to_uint16(Field,Value) do {			\
-  *(unsigned char*)(Field) = ((Value) >> 8) & 0xff;		\
+#define dtls_int_to_uint16(Field,Value) do {                \
+  *(unsigned char*)(Field) = ((Value) >> 8) & 0xff;         \
   *(((unsigned char*)(Field))+1) = ((Value) & 0xff);		\
   } while(0)
 
